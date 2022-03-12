@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Spin Dice</title>
+  <style>
+      ul {
+          display: block;
+          width: 500px;
+          height: 500px;
+          margin: 100px auto;
+          padding: 0;
+          list-style: none;
+          /* perspective: 550px; */
+          transform-style: preserve-3d;
+          /* transition: all 0.3s ease-in; */
+          /* animation: spin 5s infinite linear; */
+          transform: rotateX(13deg) rotateY(13deg);
+      }
+      ul li {
+          position: absolute;
+          display: block;
+          width: 100%;
+          height: 100%;
+          font-size: 30px;
+          color: white;
+          line-height: 500px;
+          text-align: center;
+          backface-visibility: visible;
+      }
+      .front {
+          background-color: rgba(90, 90, 90, 0.7);
+          transform: translateZ(250px);
+      }
+      .back {
+          background-color: rgba(0, 210, 0, 0.7);
+          transform: rotateY(180deg) translateZ(250px);
+      }
+      .right {
+          background-color: rgba(210, 0, 0, 0.7);
+          transform: rotateY(90deg) translateZ(250px);
+      }
+      .left {
+          background-color: rgba(0, 0, 210, 0.7);
+          transform: rotateY(-90deg) translateZ(250px);
+      }
+      .top {
+          background-color: rgba(210, 210, 0, 0.7);
+          transform: rotateX(90deg) translateZ(250px);
+      }
+      .bottom {
+          background-color: rgba(210, 0, 210, 0.7);
+          transform: rotateX(-90deg) translateZ(250px);
+      }
+
+      .square-box {
+          width: 200px;
+          height: 100px;
+          box-sizing: border-box;
+          position: relative;
+          transform-style: preserve-3d;
+          /*设置动画 三者分别为：动画名 执行一次时间 执行方式*/
+          animation: rotateanimation 5s ease;
+          animation-iteration-count: infinite; /*令动画无限执行下去*/
+          animation-timing-function: linear; /*匀速*/
+          margin: 200px auto;
+          transform:rotateX(336deg) rotateY(400deg) rotateZ(360deg);
+      }
+
+      .square-box > div {
+          position: absolute;
+      }
+
+      /*设置六面的视角*/
+      .square-box > .front {
+          width: 200px;
+          height: 100px;
+          transform: translateZ(50px);
+          background: rgba(255, 0, 0, 0.2);
+      }
+
+      .square-box > .bottom {
+          width: 200px;
+          height: 100px;
+          transform: rotateX(270deg) translateZ(50px);
+          background: rgba(255, 20, 147, 0.2);
+      }
+
+      .square-box > .back {
+          width: 200px;
+          height: 100px;
+          transform: translateZ(-50px);
+          background: rgba(0, 139, 139, 0.2);
+      }
+
+      .square-box > .top {
+          width: 200px;
+          height: 100px;
+          transform: rotateX(90deg) translateZ(50px);
+          background: rgba(255, 255, 0, 0.2);
+      }
+
+      .square-box > .left {
+          width: 100px;
+          height: 100px;
+          transform: rotateY(270deg) translateZ(50px);
+          background: rgba(0, 0, 0, 0.2);
+      }
+
+      .square-box > .right {
+          width: 100px;
+          height: 100px;
+          transform: rotateY(90deg) translateZ(150px);
+          background: rgba(167, 203, 240, 0.2);
+      }
+  </style>
+</head>
+<body>
+<ul id="dice">
+  <li class="front">1</li>
+  <li class="back">2</li>
+  <li class="right">3</li>
+  <li class="left">4</li>
+  <li class="top">5</li>
+  <li class="bottom"><img src="./img.png" style="width: 100%;height: 100%" alt=""></li>
+</ul>
+<div class="square-box">
+  <div class="front">前</div>
+  <div class="bottom">下</div>
+  <div class="back">后</div>
+  <div class="top">上</div>
+  <div class="left">左</div>
+  <div class="right"></div>
+</div>
+<script>
+  let dice = document.getElementById('dice');
+  let baseX = 13;
+  let baseY = 13;
+  dice.addEventListener('mousedown', e => {
+    let rotateX = e.clientX;
+    let rotateY = e.clientY;
+
+    let move = e => {
+      // console.log(baseX, rotateX, e.clientX);
+      // console.log(baseY, rotateY, e.clientY);
+      dice.style.transform = `rotateX(${baseX - (((e.clientY - rotateY) / 10) % 360)}deg) rotateY(${
+        baseY + (((e.clientX - rotateX) / 10) % 360)
+      }deg)`;
+      // console.log(dice.style.transform);
+    };
+    let up = e => {
+      baseX = baseX - (((e.clientY - rotateY) / 10) % 360);
+      baseY = baseY + (((e.clientX - rotateX) / 10) % 360);
+      // console.log(baseX, baseY);
+      document.removeEventListener('mousemove', move);
+      document.removeEventListener('mouseup', up);
+    };
+    document.addEventListener('mousemove', move);
+    document.addEventListener('mouseup', up);
+  });
+  document.addEventListener('selectstart', e => e.preventDefault());
+</script>
+</body>
+</html>
