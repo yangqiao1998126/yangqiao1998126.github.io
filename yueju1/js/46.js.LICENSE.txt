@@ -1,0 +1,2 @@
+/*! modernizr 3.5.0 (Custom Build) | MIT *
+ * https://modernizr.com/download/?-canvas-pointerevents-setclasses !*/
